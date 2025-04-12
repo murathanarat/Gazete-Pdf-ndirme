@@ -9,7 +9,12 @@ from selenium.webdriver.chrome.options import Options
 
 #Chrome driver'ın olduğu dizini driver_path'a yazın
 driver_path = "C:/chromedriver-win64/chromedriver.exe"
+#İndirilecek olduğu dizini download_path'e yazın
 download_path = "C:/Users/Ornek/Desktop/Gazete_pdf"
+
+if not os.path.exists(download_path):
+    os.makedirs(download_path)
+    print(download_path , " klasör oluşturuldu")
 
 # Chrome'u başlat
 options = Options()
