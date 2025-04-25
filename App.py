@@ -10,7 +10,19 @@ from selenium.webdriver.chrome.options import Options
 #Chrome driver'ın olduğu dizini driver_path'a yazın
 driver_path = "C:/chromedriver-win64/chromedriver.exe"
 #İndirilecek olduğu dizini download_path'e yazın
-download_path = "C:/Users/Ornek/Desktop/Gazete_pdf"
+download_path = "C:/Users/murat/Desktop/PDF"
+
+#İndirilmek istenen yillar
+
+        
+while(True):
+    try:
+        bas_yil = int(input("hangi yildan indirmeye başlamak istersin : "))
+        son_yil = int(input("hangi yila kadar indirmek istersin       : "))
+        break
+    except ValueError:
+        print("Geçersiz Yil") 
+    
 
 if not os.path.exists(download_path):
     os.makedirs(download_path)
@@ -50,43 +62,46 @@ for i, g_link in enumerate(gazete_link):
 
     for i in range(len(buttons)):
 
-        date_name_path = os.path.join(directory_path, buttons[i].text)
-        if not os.path.exists(date_name_path):
-            os.makedirs(date_name_path)
-            print(date_name_path , " klasör oluşturuldu")
+        if int(buttons[i].text) <= int(son_yil) and int(buttons[i].text) >= int(bas_yil):
+            date_name_path = os.path.join(directory_path, buttons[i].text)
+            if not os.path.exists(date_name_path):
+                os.makedirs(date_name_path)
+                print(date_name_path , " klasör oluşturuldu")
 
 
-        print(f"[{i+1}] Butona tıklanıyor: {buttons[i].text}")
-        buttons[i].click()
+            print(f"[{i+1}] Butona tıklanıyor: {buttons[i].text}")
+            buttons[i].click()
 
-        # İçeriğin yüklenmesi için biraz bekle
-        wait.until(EC.presence_of_all_elements_located((By.LINK_TEXT, "Tıklayınız")))
+            # İçeriğin yüklenmesi için biraz bekle
+            wait.until(EC.presence_of_all_elements_located((By.LINK_TEXT, "Tıklayınız")))
 
-        # PDF bağlantılarını pdf_links e kayıt etme
-        pdf_links = driver.find_elements(By.LINK_TEXT, "Tıklayınız")
-        pdf_link = [link.get_attribute("href") for link in pdf_links]
+            # PDF bağlantılarını pdf_links e kayıt etme
+            pdf_links = driver.find_elements(By.LINK_TEXT, "Tıklayınız")
+            pdf_link = [link.get_attribute("href") for link in pdf_links]
 
-        # PDF'leri indir
-        for p_link in pdf_link:
+            # PDF'leri indir
+            for p_link in pdf_link:
 
-            file_name = p_link.split("/")[-1]
-            file_path = os.path.join(date_name_path, file_name)
+                file_name = p_link.split("/")[-1]
+                file_path = os.path.join(date_name_path, file_name)
 
-            # Eğer dosya zaten varsa, indirme işlemini atla
-            if os.path.exists(file_path):
-                print(f"{file_name} zaten mevcut, indirilmiyor.")
-                continue
+                # Eğer dosya zaten varsa, indirme işlemini atla
+                if os.path.exists(file_path):
+                    print(f"{file_name} zaten mevcut, indirilmiyor.")
+                    continue
 
-            # İndirme işlemi
-            print(f"{file_name} indiriliyor...")
-            response = requests.get(p_link, verify=False)
+                # İndirme işlemi
+                print(f"{file_name} indiriliyor...")
+                response = requests.get(p_link, verify=False)
 
-            if response.status_code == 200:
-                with open(file_path, 'wb') as file:
-                    file.write(response.content)
-                print(f"Dosya başarıyla {file_name} olarak indirildi.")
-            else:
-                print(f"Dosya indirilirken bir hata oluştu: {file_name}")
+                if response.status_code == 200:
+                    with open(file_path, 'wb') as file:
+                        file.write(response.content)
+                    print(f"Dosya başarıyla {file_name} olarak indirildi.")
+                else:
+                    print(f"Dosya indirilirken bir hata oluştu: {file_name}")
+
+
 
 # Tarayıcıyı kapat
 driver.quit()
