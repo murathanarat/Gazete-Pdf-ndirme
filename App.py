@@ -10,7 +10,7 @@ from selenium.webdriver.chrome.options import Options
 #Chrome driver'ın olduğu dizini driver_path'a yazın
 driver_path = "C:/chromedriver-win64/chromedriver.exe"
 #İndirilecek olduğu dizini download_path'e yazın
-download_path = "C:/Users/murat/Desktop/PDF"
+download_path = "C:/Users/User/Desktop/PDF"
 
 #İndirilmek istenen yillar
 
