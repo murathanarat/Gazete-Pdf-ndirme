@@ -1,4 +1,7 @@
 # Gazete-pdf-indirme
+Kaynak arşiv : İstanbul Üniversitesi Gazeteden Tarihe Bakış Projesi
+https://nek.istanbul.edu.tr/ekos/GAZETE
+
 Bir web sitesinden gazete arşivi indirecektim, ancak tek tek indirmek zordu. 
 Bu sebeple, requests ve selenium kütüphanelerini kullanarak bir kod yazdım.
 
